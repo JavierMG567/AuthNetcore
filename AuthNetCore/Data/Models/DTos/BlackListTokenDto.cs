@@ -8,6 +8,7 @@ namespace AuthNetCore.Data.Models.DTos
 {
     public class BlackListTokenDto
     {
+        public int AccountId { get; set; }
         public string Token {  get; set; }
     }
 }
