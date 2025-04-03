@@ -1,0 +1,6 @@
+@AuthNetCore.Services_HostAddress = http://localhost:5053
+
+GET {{AuthNetCore.Services_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
