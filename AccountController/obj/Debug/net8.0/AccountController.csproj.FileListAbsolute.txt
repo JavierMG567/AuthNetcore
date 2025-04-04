@@ -1,0 +1,16 @@
+C:\Users\javie\source\repos\AuthNetCore\AccountController\bin\Debug\net8.0\AccountController.deps.json
+C:\Users\javie\source\repos\AuthNetCore\AccountController\bin\Debug\net8.0\AccountController.dll
+C:\Users\javie\source\repos\AuthNetCore\AccountController\bin\Debug\net8.0\AccountController.pdb
+C:\Users\javie\source\repos\AuthNetCore\AccountController\bin\Debug\net8.0\AuthNetCore.dll
+C:\Users\javie\source\repos\AuthNetCore\AccountController\bin\Debug\net8.0\AuthNetCore.pdb
+C:\Users\javie\source\repos\AuthNetCore\AccountController\obj\Debug\net8.0\AccountController.csproj.AssemblyReference.cache
+C:\Users\javie\source\repos\AuthNetCore\AccountController\obj\Debug\net8.0\AccountController.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\javie\source\repos\AuthNetCore\AccountController\obj\Debug\net8.0\AccountController.AssemblyInfoInputs.cache
+C:\Users\javie\source\repos\AuthNetCore\AccountController\obj\Debug\net8.0\AccountController.AssemblyInfo.cs
+C:\Users\javie\source\repos\AuthNetCore\AccountController\obj\Debug\net8.0\AccountController.csproj.CoreCompileInputs.cache
+C:\Users\javie\source\repos\AuthNetCore\AccountController\obj\Debug\net8.0\AccountController.sourcelink.json
+C:\Users\javie\source\repos\AuthNetCore\AccountController\obj\Debug\net8.0\AccountC.45BCEF1D.Up2Date
+C:\Users\javie\source\repos\AuthNetCore\AccountController\obj\Debug\net8.0\AccountController.dll
+C:\Users\javie\source\repos\AuthNetCore\AccountController\obj\Debug\net8.0\refint\AccountController.dll
+C:\Users\javie\source\repos\AuthNetCore\AccountController\obj\Debug\net8.0\AccountController.pdb
+C:\Users\javie\source\repos\AuthNetCore\AccountController\obj\Debug\net8.0\ref\AccountController.dll
