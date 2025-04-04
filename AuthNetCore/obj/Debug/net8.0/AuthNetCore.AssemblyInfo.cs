@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AuthNetCore")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ad0ef720bdd32dc8e28ed646aa813c2ebfffe931")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+78b2134056cb8488579aee65762a51e958540691")]
 [assembly: System.Reflection.AssemblyProductAttribute("AuthNetCore")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AuthNetCore")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

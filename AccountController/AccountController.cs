@@ -1,8 +1,13 @@
-﻿using AuthNetCore.Utilities.BaseControllers;
+﻿using AuthNetCore.BL.IBL;
+using AuthNetCore.Data.Models.EModels;
+using AuthNetCore.Utilities.BaseControllers;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,10 +15,123 @@ namespace AccountController
 {
     public class AccountController : AuthNetCoreControllerBase<AccountController>
     {
-        public AccountController(ILogger<AccountController> logger)
+        private readonly IAccountServiceBL _accountServiceBL;
+        public AccountController(ILogger<AccountController> logger, IAccountServiceBL accountServiceBL)
             : base(logger)
         {
-            
+            _accountServiceBL = accountServiceBL;
+        }
+
+        [HttpPost("CustomerRegistration")]
+        [SwaggerOperation(
+            Summary = "",
+            Description = "")]
+        [SwaggerResponse((int)HttpStatusCode.OK, "Succeded.")]
+        [SwaggerResponse((int)HttpStatusCode.BadRequest, ".")]
+        [SwaggerResponse((int)HttpStatusCode.InternalServerError, ".")]
+        public async Task<ActionResult> AccountRegistrationAsync([FromBody] AccountRegistration accountRegistration)
+        {
+            if (accountRegistration == null)
+            {
+                return BadRequest("Invalid registration details.");
+            }
+
+            try
+            {
+                var accountRegistered = await _accountServiceBL.AccountRegisterAsync(accountRegistration);
+                return Ok(accountRegistered);
+            }
+            catch (System.Exception)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing the registration.");
+            }
+        }
+
+        [HttpPost("CustomerLoginAcces")]
+        [SwaggerOperation(
+            Summary = "",
+            Description = ".")]
+        [SwaggerResponse((int)HttpStatusCode.OK, "Succeded.")]
+        [SwaggerResponse((int)HttpStatusCode.BadRequest, ".")]
+        [SwaggerResponse((int)HttpStatusCode.InternalServerError, ".")]
+        public async Task<ActionResult> AccountLoginAccessAsync(AccountLogin accountLogin)
+        {
+            if (accountLogin == null)
+            {
+                return BadRequest("Invalid login details.");
+            }
+
+            try
+            {
+                var account = await _accountServiceBL.AccountAuthenticateAsync(accountLogin);
+
+                if (account == null)
+                {
+                    return BadRequest("Invalid login credentials.");
+                }
+
+                return Ok(account);
+            }
+            catch (System.Exception)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing the login.");
+            }
+        }
+
+        [HttpDelete("CustomerDeleteAcces")]
+        [SwaggerOperation(
+            Summary = "",
+            Description = ".")]
+        [SwaggerResponse((int)HttpStatusCode.OK, "Succeded.")]
+        [SwaggerResponse((int)HttpStatusCode.BadRequest, ".")]
+        [SwaggerResponse((int)HttpStatusCode.InternalServerError, ".")]
+        public async Task<ActionResult> AccountDeleteAsync(string tokenString)
+        {
+            if (string.IsNullOrEmpty(tokenString))
+            {
+                return BadRequest("Token is required.");
+            }
+
+            try
+            {
+                await _accountServiceBL.AccountDeleteAsync(tokenString);
+                return Ok("Account successfully deleted.");
+            }
+            catch (System.Exception)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing the account deletion.");
+            }
+        }
+
+        [HttpPost("CustomerDeleteAcces")]
+        [SwaggerOperation(
+            Summary = "",
+            Description = ".")]
+        [SwaggerResponse((int)HttpStatusCode.OK, "Succeded.")]
+        [SwaggerResponse((int)HttpStatusCode.BadRequest, ".")]
+        [SwaggerResponse((int)HttpStatusCode.InternalServerError, ".")]
+        public async Task<ActionResult> AccountLogoutAsync(string tokenString)
+        {
+            if (string.IsNullOrEmpty(tokenString))
+            {
+                return BadRequest("Token is required.");
+            }
+
+            try
+            {
+                var isRevoked = await _accountServiceBL.RevokeTokenAsync(tokenString);
+
+                if (isRevoked)
+                {
+                    return Ok("Successfully logged out.");
+                }
+
+                return BadRequest("Token is invalid or already revoked.");
+            }
+            catch (System.Exception)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing the logout.");
+            }
         }
     }
 }

@@ -13,5 +13,7 @@ namespace AuthNetCore.Data.Models.DTos
         public string LastName { get; set; }
         public string Email { get; set; }
         public DateOnly BirthDate { get; set; }
+        public bool IsLocked { get; set; }
+        public int FailedLoginAttempts { get; set; }
     }
 }
