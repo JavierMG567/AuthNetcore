@@ -1,0 +1,8 @@
+C:\Users\javie\source\repos\AuthNetCore\AuthNetCore.Services\obj\Debug\net8.0\AuthNetCore.Services.csproj.AssemblyReference.cache
+C:\Users\javie\source\repos\AuthNetCore\AuthNetCore.Services\obj\Debug\net8.0\AuthNetCore.Services.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\javie\source\repos\AuthNetCore\AuthNetCore.Services\obj\Debug\net8.0\AuthNetCore.Services.AssemblyInfoInputs.cache
+C:\Users\javie\source\repos\AuthNetCore\AuthNetCore.Services\obj\Debug\net8.0\AuthNetCore.Services.AssemblyInfo.cs
+C:\Users\javie\source\repos\AuthNetCore\AuthNetCore.Services\obj\Debug\net8.0\AuthNetCore.Services.csproj.CoreCompileInputs.cache
+C:\Users\javie\source\repos\AuthNetCore\AuthNetCore.Services\obj\Debug\net8.0\AuthNetCore.Services.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\javie\source\repos\AuthNetCore\AuthNetCore.Services\obj\Debug\net8.0\AuthNetCore.Services.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\javie\source\repos\AuthNetCore\AuthNetCore.Services\obj\Debug\net8.0\AuthNetCore.Services.sourcelink.json
