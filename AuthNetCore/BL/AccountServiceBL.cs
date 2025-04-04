@@ -42,11 +42,11 @@ namespace AuthNetCore.BL
             }
         }
 
-        public async Task<AccountLogin> AccountRegisterAsync(AccountRegistration accountRegistration)
+        public async Task<AccountDto> AccountRegisterAsync(AccountRegistration accountRegistration)
         {
             try
             {
-                AccountLogin account = await _accountService.AccountRegisterAsync(accountRegistration);
+                AccountDto account = await _accountService.AccountRegisterAsync(accountRegistration);
                 return account;
             }
             catch (Exception)
