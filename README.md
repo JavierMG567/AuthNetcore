@@ -8,13 +8,16 @@ Este es un proyecto en .NET Core para la autenticación de usuarios y la gestió
 Antes de comenzar, asegúrate de tener instalados los siguientes requisitos:
 
 - [.NET SDK](https://dotnet.microsoft.com/download) (preferentemente la última versión de .NET Core o .NET 5+).
-- [Visual Studio](https://visualstudio.microsoft.com/) o [Visual Studio Code](https://code.visualstudio.com/) para la edición del código.
+- [Visual Studio](https://visualstudio.microsoft.com/).
 - [SQL Server](https://www.microsoft.com/en-us/sql-server) o alguna base de datos compatible.
 - [Postman](https://www.postman.com/) (opcional, para probar los endpoints de la API).
 
 # Instrucciones para Crear las Tablas en SQL Server
 
-A continuación se muestran las instrucciones para crear las tablas en SQL Server basadas en los modelos proporcionados. Utiliza los siguientes scripts SQL para crear las tablas en tu base de datos.
+A continuación se muestra como crear tu BAse de Datos para este proyecto Sigue lo sigueinte:
+
+- Crea en SQL Server una Base de DAtos llamada AuthNetCore
+- Las instrucciones para crear las tablas en SQL Server. Utiliza los siguientes scripts SQL para crear las tablas en tu base de datos.
 
 ## 1. Crear la Tabla `Account`
 
@@ -73,7 +76,9 @@ CREATE TABLE BlackListTokenDto (
 
 ### 1. Clonar el repositorio
 Clona este repositorio en tu máquina local usando el siguiente comando:
+```bash
 git clone https://github.com/tu-usuario/tu-repositorio.git´
+```
 O puedes hacerlo directo desde Github Desktop
 
 ## Instrucciones para restablcer deependencias desde Visual Studio IDE 
