@@ -26,5 +26,14 @@ namespace AuthNetCore.Services
 
             services.ConfigureDatabase(Configuration);
         }
+
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            app.CommonConfigure(env);
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+        }
     }
 }
