@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace AccountController
 {
+    [ApiVersion("1.0")]
     public class AccountController : AuthNetCoreControllerBase<AccountController>
     {
         private readonly IAccountServiceBL _accountServiceBL;
@@ -85,7 +86,7 @@ namespace AccountController
         [SwaggerResponse((int)HttpStatusCode.OK, "Succeded.")]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, ".")]
         [SwaggerResponse((int)HttpStatusCode.InternalServerError, ".")]
-        public async Task<ActionResult> AccountDeleteAsync(string tokenString)
+        public async Task<ActionResult> AccountDeleteAsync([FromQuery] string tokenString)
         {
             if (string.IsNullOrEmpty(tokenString))
             {
@@ -103,14 +104,14 @@ namespace AccountController
             }
         }
 
-        [HttpPost("CustomerDeleteAcces")]
+        [HttpPost("CustomerLogoutAcces")]
         [SwaggerOperation(
             Summary = "",
             Description = ".")]
         [SwaggerResponse((int)HttpStatusCode.OK, "Succeded.")]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, ".")]
         [SwaggerResponse((int)HttpStatusCode.InternalServerError, ".")]
-        public async Task<ActionResult> AccountLogoutAsync(string tokenString)
+        public async Task<ActionResult> AccountLogoutAsync([FromQuery] string tokenString)
         {
             if (string.IsNullOrEmpty(tokenString))
             {

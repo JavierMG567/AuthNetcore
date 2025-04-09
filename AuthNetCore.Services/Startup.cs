@@ -1,4 +1,9 @@
-﻿using AuthNetCore.Data.Models.EModels;
+﻿using AuthNetCore.BL;
+using AuthNetCore.BL.IBL;
+using AuthNetCore.DAL;
+using AuthNetCore.DAL.IDAL;
+using AuthNetCore.Data.Models.EModels;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Identity.Client;
 
 namespace AuthNetCore.Services
@@ -23,17 +28,26 @@ namespace AuthNetCore.Services
             services.AddAuthorization();
 
             services.CommonSwaggerConfigurations();
-
             services.ConfigureDatabase(Configuration);
+
+            services.AddScoped<IAccountServiceBL, AccountServiceBL>();
+            services.AddScoped<IAccountService, AccountService>();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
         {
-            app.CommonConfigure(env);
-            app.UseEndpoints(endpoints =>
+            app.UseSwagger();  // Genera el archivo Swagger
+
+            app.UseSwaggerUI(options =>
             {
-                endpoints.MapControllers();
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1");
             });
+
+
+            app.UseRouting();
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
+
+
     }
 }
