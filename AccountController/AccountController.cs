@@ -1,4 +1,5 @@
 ﻿using AuthNetCore.BL.IBL;
+using AuthNetCore.Data.Models.DTos;
 using AuthNetCore.Data.Models.EModels;
 using AuthNetCore.Utilities.BaseControllers;
 using Microsoft.AspNetCore.Mvc;
@@ -39,7 +40,7 @@ namespace AccountController
 
             try
             {
-                var accountRegistered = await _accountServiceBL.AccountRegisterAsync(accountRegistration);
+                AccountDto accountRegistered = await _accountServiceBL.AccountRegisterAsync(accountRegistration);
                 return Ok(accountRegistered);
             }
             catch (System.Exception)
@@ -64,7 +65,7 @@ namespace AccountController
 
             try
             {
-                var account = await _accountServiceBL.AccountAuthenticateAsync(accountLogin);
+                AccountDto? account = await _accountServiceBL.AccountAuthenticateAsync(accountLogin);
 
                 if (account == null)
                 {
@@ -120,7 +121,7 @@ namespace AccountController
 
             try
             {
-                var isRevoked = await _accountServiceBL.RevokeTokenAsync(tokenString);
+                bool isRevoked = await _accountServiceBL.RevokeTokenAsync(tokenString);
 
                 if (isRevoked)
                 {

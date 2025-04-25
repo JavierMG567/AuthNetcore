@@ -46,7 +46,7 @@ namespace AuthNetCore.Services
             this IServiceCollection services,
             IConfiguration configuration)
         {
-            var jwtKey = configuration["Jwt:Key"];
+            string? jwtKey = configuration["Jwt:Key"];
             if (string.IsNullOrEmpty(jwtKey))
             {
                 throw new ArgumentNullException(nameof(jwtKey), Globals.JwtKeyNotFounded);
@@ -116,7 +116,6 @@ namespace AuthNetCore.Services
 
         }
 
-
         internal static void CommonConfigure(
             this IApplicationBuilder app,
             IWebHostEnvironment env,
@@ -129,11 +128,12 @@ namespace AuthNetCore.Services
 
                 app.UseSwaggerUI(options =>
                 {
-                    foreach (var description in provider.ApiVersionDescriptions)
+                    foreach (ApiVersionDescription description in provider.ApiVersionDescriptions)
                     {
                         options.SwaggerEndpoint(
                             $"/swagger/{description.GroupName}/swagger.json",
-                            $"{Globals.NethAuthCoreValue} {description.GroupName}");
+                            $"{Globals.NethAuthCoreValue} {description.GroupName}"
+                        );
                     }
                 });
             }

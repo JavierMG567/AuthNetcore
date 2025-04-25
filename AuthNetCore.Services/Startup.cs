@@ -36,13 +36,12 @@ namespace AuthNetCore.Services
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
         {
-            app.UseSwagger();  // Genera el archivo Swagger
+            app.UseSwagger();
 
             app.UseSwaggerUI(options =>
             {
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1");
             });
-
 
             app.UseRouting();
             app.UseEndpoints(endpoints => endpoints.MapControllers());
