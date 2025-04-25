@@ -1,4 +1,5 @@
 ﻿using AuthNetCore.BL.IBL;
+using AuthNetCore.Data.Models.DTos;
 using AuthNetCore.Data.Models.EModels;
 using AuthNetCore.Utilities.BaseControllers;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace AccountController
 {
+    [ApiVersion("1.0")]
     public class AccountController : AuthNetCoreControllerBase<AccountController>
     {
         private readonly IAccountServiceBL _accountServiceBL;
@@ -38,7 +40,7 @@ namespace AccountController
 
             try
             {
-                var accountRegistered = await _accountServiceBL.AccountRegisterAsync(accountRegistration);
+                AccountDto accountRegistered = await _accountServiceBL.AccountRegisterAsync(accountRegistration);
                 return Ok(accountRegistered);
             }
             catch (System.Exception)
@@ -63,7 +65,7 @@ namespace AccountController
 
             try
             {
-                var account = await _accountServiceBL.AccountAuthenticateAsync(accountLogin);
+                AccountDto? account = await _accountServiceBL.AccountAuthenticateAsync(accountLogin);
 
                 if (account == null)
                 {
@@ -85,7 +87,7 @@ namespace AccountController
         [SwaggerResponse((int)HttpStatusCode.OK, "Succeded.")]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, ".")]
         [SwaggerResponse((int)HttpStatusCode.InternalServerError, ".")]
-        public async Task<ActionResult> AccountDeleteAsync(string tokenString)
+        public async Task<ActionResult> AccountDeleteAsync([FromQuery] string tokenString)
         {
             if (string.IsNullOrEmpty(tokenString))
             {
@@ -103,14 +105,14 @@ namespace AccountController
             }
         }
 
-        [HttpPost("CustomerDeleteAcces")]
+        [HttpPost("CustomerLogoutAcces")]
         [SwaggerOperation(
             Summary = "",
             Description = ".")]
         [SwaggerResponse((int)HttpStatusCode.OK, "Succeded.")]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, ".")]
         [SwaggerResponse((int)HttpStatusCode.InternalServerError, ".")]
-        public async Task<ActionResult> AccountLogoutAsync(string tokenString)
+        public async Task<ActionResult> AccountLogoutAsync([FromQuery] string tokenString)
         {
             if (string.IsNullOrEmpty(tokenString))
             {
@@ -119,7 +121,7 @@ namespace AccountController
 
             try
             {
-                var isRevoked = await _accountServiceBL.RevokeTokenAsync(tokenString);
+                bool isRevoked = await _accountServiceBL.RevokeTokenAsync(tokenString);
 
                 if (isRevoked)
                 {

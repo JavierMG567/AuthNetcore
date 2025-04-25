@@ -4,14 +4,14 @@
     "C:\\Users\\javie\\source\\repos\\AuthNetCore\\AuthNetCore.Services\\AuthNetCore.Services.csproj": {}
   },
   "projects": {
-    "C:\\Users\\javie\\source\\repos\\AuthNetCore\\AuthNetCore.Services\\AuthNetCore.Services.csproj": {
+    "C:\\Users\\javie\\source\\repos\\AuthNetCore\\AccountController\\AccountController.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\javie\\source\\repos\\AuthNetCore\\AuthNetCore.Services\\AuthNetCore.Services.csproj",
-        "projectName": "AuthNetCore.Services",
-        "projectPath": "C:\\Users\\javie\\source\\repos\\AuthNetCore\\AuthNetCore.Services\\AuthNetCore.Services.csproj",
+        "projectUniqueName": "C:\\Users\\javie\\source\\repos\\AuthNetCore\\AccountController\\AccountController.csproj",
+        "projectName": "AccountController",
+        "projectPath": "C:\\Users\\javie\\source\\repos\\AuthNetCore\\AccountController\\AccountController.csproj",
         "packagesPath": "C:\\Users\\javie\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\javie\\source\\repos\\AuthNetCore\\AuthNetCore.Services\\obj\\",
+        "outputPath": "C:\\Users\\javie\\source\\repos\\AuthNetCore\\AccountController\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -59,9 +59,124 @@
               "target": "Package",
               "version": "[2.3.0, )"
             },
+            "Microsoft.AspNetCore.Mvc.Versioning": {
+              "target": "Package",
+              "version": "[5.1.0, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.3, )"
+            },
+            "Microsoft.EntityFrameworkCore.Abstractions": {
+              "target": "Package",
+              "version": "[9.0.3, )"
+            },
+            "Microsoft.EntityFrameworkCore.Relational": {
+              "target": "Package",
+              "version": "[9.0.3, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[9.0.3, )"
+            },
+            "NLog": {
+              "target": "Package",
+              "version": "[5.4.0, )"
+            },
+            "NLog.Extensions.Logging": {
+              "target": "Package",
+              "version": "[5.4.0, )"
+            },
+            "Swashbuckle.AspNetCore.Annotations": {
+              "target": "Package",
+              "version": "[6.0.7, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\javie\\source\\repos\\AuthNetCore\\AuthNetCore.Services\\AuthNetCore.Services.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\javie\\source\\repos\\AuthNetCore\\AuthNetCore.Services\\AuthNetCore.Services.csproj",
+        "projectName": "AuthNetCore.Services",
+        "projectPath": "C:\\Users\\javie\\source\\repos\\AuthNetCore\\AuthNetCore.Services\\AuthNetCore.Services.csproj",
+        "packagesPath": "C:\\Users\\javie\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\javie\\source\\repos\\AuthNetCore\\AuthNetCore.Services\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\javie\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\javie\\source\\repos\\AuthNetCore\\AccountController\\AccountController.csproj": {
+                "projectPath": "C:\\Users\\javie\\source\\repos\\AuthNetCore\\AccountController\\AccountController.csproj"
+              },
+              "C:\\Users\\javie\\source\\repos\\AuthNetCore\\AuthNetCore\\AuthNetCore.csproj": {
+                "projectPath": "C:\\Users\\javie\\source\\repos\\AuthNetCore\\AuthNetCore\\AuthNetCore.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Authentication": {
+              "target": "Package",
+              "version": "[2.3.0, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[8.0.12, )"
+            },
+            "Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer": {
+              "target": "Package",
+              "version": "[5.1.0, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
@@ -94,6 +209,10 @@
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.6.2, )"
+            },
+            "Swashbuckle.AspNetCore.Annotations": {
+              "target": "Package",
+              "version": "[6.0.7, )"
             }
           },
           "imports": [
@@ -197,6 +316,10 @@
             "NLog.Extensions.Logging": {
               "target": "Package",
               "version": "[5.4.0, )"
+            },
+            "Swashbuckle.AspNetCore.Annotations": {
+              "target": "Package",
+              "version": "[6.0.7, )"
             }
           },
           "imports": [
