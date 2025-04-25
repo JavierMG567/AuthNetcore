@@ -7,6 +7,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AuthNetCore.Services
 {
@@ -44,7 +46,7 @@ namespace AuthNetCore.Services
             this IServiceCollection services,
             IConfiguration configuration)
         {
-            var jwtKey = configuration["Jwt:Key"];
+            string? jwtKey = configuration["Jwt:Key"];
             if (string.IsNullOrEmpty(jwtKey))
             {
                 throw new ArgumentNullException(nameof(jwtKey), Globals.JwtKeyNotFounded);
@@ -86,53 +88,53 @@ namespace AuthNetCore.Services
 
         internal static void CommonSwaggerConfigurations(this IServiceCollection services)
         {
-            services.AddSwaggerGen(c =>
+            // API Versioning
+            services.AddApiVersioning(options =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo
+                options.ReportApiVersions = true;
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.DefaultApiVersion = new ApiVersion(1, 0);
+            });
+
+            // Swagger API Version Explorer
+            services.AddVersionedApiExplorer(options =>
+            {
+                options.GroupNameFormat = "'v'VVV";
+                options.SubstituteApiVersionInUrl = true;
+            });
+
+            // Swagger Generator
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = Globals.NethAuthCoreValue,
-                    Version = "v1", 
+                    Version = "1.0.0",
                     Description = Globals.NethAuthCoreDescription
                 });
-
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                {
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.Http,
-                    Scheme = "Bearer",
-                    BearerFormat = "JWT",
-                    In = ParameterLocation.Header,
-                    Description = "Enter 'Bearer' followed by your JWT token. Example: 'Bearer abc123def456'."
-                });
-
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        },
-                        Array.Empty<string>()
-                    }
-                });
             });
+
         }
 
         internal static void CommonConfigure(
             this IApplicationBuilder app,
-            IWebHostEnvironment env)
+            IWebHostEnvironment env,
+            IApiVersionDescriptionProvider provider)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c =>
+
+                app.UseSwaggerUI(options =>
                 {
-                    c.SwaggerEndpoint(Globals.SwaggerUrlEndpointV1, Globals.SwaggerNameEndpointV1);
+                    foreach (ApiVersionDescription description in provider.ApiVersionDescriptions)
+                    {
+                        options.SwaggerEndpoint(
+                            $"/swagger/{description.GroupName}/swagger.json",
+                            $"{Globals.NethAuthCoreValue} {description.GroupName}"
+                        );
+                    }
                 });
             }
             else

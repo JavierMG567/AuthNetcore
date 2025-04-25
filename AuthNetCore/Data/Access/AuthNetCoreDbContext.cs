@@ -1,4 +1,5 @@
 ﻿using AuthNetCore.Data.Models.DTos;
+using AuthNetCore.Data.Models.EModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -15,5 +16,9 @@ namespace AuthNetCore.Data.Access
         public DbSet<BlackListTokenDto> BlackListToken { get; set; }
         public DbSet<AccountAuth> AccountAuth { get; set; }
         public AuthNetCoreDbContext(DbContextOptions<AuthNetCoreDbContext> options) : base(options) { }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<AccountAuth>().HasKey(a => a.AccountId);
+        }
     }
 }
