@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AuthNetCore.Utilities.Globals;
+using System;
 using System.Net;
 using System.Net.Mail;
 using System.Security.Cryptography;
@@ -9,10 +10,10 @@ namespace AuthNetCore.Helpers
     public static class EmailServiceHelper
     {
         private static readonly EmailConfiguration _config = new EmailConfiguration(
-            smtpServer: "mail.midominio.com",
+            smtpServer: Globals.SmtpServer,
             smtpPort: 456,
-            smtpUser: "noreply@midominio.com",
-            smtpPassword: "tu_contraseña_segura"
+            smtpUser: Globals.SmtpUser,
+            smtpPassword: Globals.SmtpPassword
         );
 
         public static bool SendPasswordRecoveryEmail(string recipientEmail)
@@ -105,7 +106,7 @@ namespace AuthNetCore.Helpers
     {
         public static string BuildLink(string token)
         {
-            return $"https://tusitio.com/reset-password?token={token}";
+            return $"{Globals.RecoveryBaseUrl}token={token}";
         }
     }
 
@@ -128,7 +129,7 @@ namespace AuthNetCore.Helpers
                             <table width=""600"" cellpadding=""0"" cellspacing=""0"" style=""background-color: #ffffff; border-radius: 8px; overflow: hidden;"">
                                 <tr>
                                     <td style=""background-color: #2c3e50; padding: 20px; text-align: center;"">
-                                        <img src=""https://via.placeholder.com/150x50?text=AuthNethCore"" alt=""AuthNethCore Logo"" style=""display: block; margin: 0 auto;"">
+                                        <img src=""{Globals.LogoRecoveryEmailBody}"" alt=""AuthNethCore Logo"" style=""display: block; margin: 0 auto;"">
                                     </td>
                                 </tr>
                                 <tr>
@@ -154,15 +155,15 @@ namespace AuthNetCore.Helpers
                                             Este enlace estará disponible durante un tiempo limitado por razones de seguridad. Te recomendamos no compartirlo con nadie.
                                         </p>
                                         <p style=""font-size: 14px; color: #999;"">
-                                            Si tienes alguna duda, contáctanos a través de nuestro correo de soporte: <a href=""mailto:soporte@midominio.com"">soporte@midominio.com</a>
+                                            Si tienes alguna duda, contáctanos a través de nuestro correo de soporte: <a href=""{Globals.MailSupportReq}"">soporte@midominio.com</a>
                                         </p>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style=""background-color: #ecf0f1; text-align: center; padding: 20px; font-size: 12px; color: #777;"">
                                         © {DateTime.UtcNow.Year} AuthNethCore. Todos los derechos reservados.<br/>
-                                        <a href=""https://tusitio.com/privacidad"" style=""color: #3498db;"">Política de privacidad</a> |
-                                        <a href=""https://tusitio.com/soporte"" style=""color: #3498db;"">Soporte</a>
+                                        <a href=""{Globals.PrivacyUrl}"" style=""color: #3498db;"">Política de privacidad</a> |
+                                        <a href=""{Globals.SupportUrl}"" style=""color: #3498db;"">Soporte</a>
                                     </td>
                                 </tr>
                             </table>
@@ -180,8 +181,8 @@ namespace AuthNetCore.Helpers
         {
             return new MailMessage
             {
-                From = new MailAddress("noreply@midominio.com", "AuthNethCore System"),
-                Subject = "Recuperación de contraseñas - AuthNethCore System",
+                From = new MailAddress(Globals.SmtpUser, Globals.SystemServiceName),
+                Subject = Globals.EmailServiceHelperSubject,
                 Body = htmlBody,
                 IsBodyHtml = true,
                 To = { to }
