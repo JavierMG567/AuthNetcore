@@ -15,5 +15,6 @@ namespace AuthNetCore.DAL.IDAL
         Task<bool> RevokeTokenAsync(string token);
         Task AccountDeleteAsync(string tokenString);
         Task<AccountDto> PasswordRecoveryAsync(string email);
+        Task<bool> ResetPasswordAsync(AccountResetPassword accountResetPassword);
     }
 }

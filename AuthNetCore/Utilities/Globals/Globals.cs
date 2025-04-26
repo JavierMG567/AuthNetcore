@@ -32,5 +32,8 @@ namespace AuthNetCore.Utilities.Globals
         public const string PrivacyUrl = "https://tusitio.com/privacidad";
         public const string SupportUrl = "https://tusitio.com/soporte";
         public const string MailSupportReq = "mailto:soporte@midominio.com";
+        // AuthenticationServiceHelper variables
+        public const string UserAuthenticationName = "AuthNetCoreServiceAdmin";
+        public const string PasswordAuthenticationServiceShelter = "ShelterPasswordNetCore";
     }
 }

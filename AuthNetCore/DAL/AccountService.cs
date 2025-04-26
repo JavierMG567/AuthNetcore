@@ -86,14 +86,26 @@ namespace AuthNetCore.DAL
             return accountDto;
         }
 
-        public async Task ResetPasswordAsync(AccountResetPassword accountResetPassword)
+        public async Task<bool> ResetPasswordAsync(AccountResetPassword accountResetPassword)
         {
+            if( accountResetPassword.email == null || 
+                accountResetPassword.password == null || 
+                accountResetPassword.passwordConfirmation == null) return false;
+
             var (id, accountDto) = await GetAccountDtoIdByEmail(accountResetPassword.email);
+            if (accountDto == null) return false;
+
             AccountSessionsDto accountSessions = await GetAccountSessionById(id);
+            if (accountSessions == null) return false;
+
             RemoveAccountSession(accountSessions);
             AccountAuth? accountAuth = await GetAccountAuthByAccountIdAsync(id);
+            if (accountAuth == null) return false;
+
             RemoveAccountAuth(accountAuth);
             await StablishAccountCredentialsAsync(accountResetPassword.passwordConfirmation, id, accountDto);
+
+            return true;
         }
 
         #region Helper Methods
