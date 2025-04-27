@@ -14,5 +14,6 @@ namespace AuthNetCore.Data.Models.DTos
         public int AccountId { get; set; }
         public string Token { get; set; }
         public bool IsRevoked { get; set; }
+        public DateTime Created { get; set; }
     }
 }

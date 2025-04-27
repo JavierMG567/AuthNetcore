@@ -17,5 +17,6 @@ namespace AuthNetCore.Data.Models.DTos
         public DateOnly BirthDate { get; set; }
         public bool IsLocked { get; set; }
         public int FailedLoginAttempts { get; set; }
+        public DateTime? LockoutEnd { get; set; }
     }
 }

@@ -47,6 +47,7 @@ namespace AuthNetCore.Services
             IConfiguration configuration)
         {
             string? jwtKey = configuration["Jwt:Key"];
+
             if (string.IsNullOrEmpty(jwtKey))
             {
                 throw new ArgumentNullException(nameof(jwtKey), Globals.JwtKeyNotFounded);
