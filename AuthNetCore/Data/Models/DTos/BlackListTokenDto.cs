@@ -12,5 +12,6 @@ namespace AuthNetCore.Data.Models.DTos
         [Key]
         public int AccountId { get; set; }
         public string Token {  get; set; }
+        public DateTime? RevokeTokenDateTime { get; set; }
     }
 }

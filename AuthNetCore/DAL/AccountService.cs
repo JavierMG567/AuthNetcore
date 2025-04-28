@@ -28,35 +28,45 @@ namespace AuthNetCore.DAL
             _jwtSettings = jwtSettings.Value;
         }
 
-        public async Task<AccountDto> AccountAuthenticateAsync(AccountLogin accountLogin)
+        public async Task<(AccountDto, string)> AccountAuthenticateAsync(AccountLogin accountLogin)
         {
+            if (string.IsNullOrWhiteSpace(accountLogin.Email) || string.IsNullOrWhiteSpace(accountLogin.Password))
+                return (new AccountDto(), string.Empty); 
+
             AccountDto? account = await GetAccountByEmailAsync(accountLogin.Email);
-            if (account == null || account.IsLocked) return new AccountDto();
+
+            if (account == null) 
+                return (new AccountDto(), string.Empty);
+
+            if (account.IsLocked) 
+                return (new AccountDto(), string.Empty);
+
+            await UnlockAccountAsync(account);
+
+            if (account.IsLocked)
+                return (new AccountDto(), string.Empty);
+
             AccountAuth? auth = await GetAccountAuthByAccountIdAsync(account.Id);
-            
-            if (auth == null || !SecurityHelper.VerifyPassword(
-                accountLogin.Password, 
-                auth.PasswordHash, 
-                auth.PasswordSalt)
-            )
-            {
-                await HandleFailedLoginAttemptAsync(account);
-                return new AccountDto();
-            }
+
+            if(!await PasswordStash(auth, accountLogin, account))
+                return (new AccountDto(), string.Empty);
 
             return await HandleSuccessfulLoginAsync(account);
         }
 
-        public async Task<AccountDto> AccountRegisterAsync(AccountRegistration accountRegistration)
+        public async Task<(AccountDto?, string)> AccountRegisterAsync(AccountRegistration accountRegistration)
         {
-            AccountDto account = await CreateAccountAsync(accountRegistration);
-            await StablishAccountCredentialsAsync(accountRegistration.Password, account.Id, account);
-            return account;
+            AccountDto? account = await CreateAccountAsync(accountRegistration);
+            if (account == null) return (new AccountDto(), string.Empty);
+            string token = await StablishAccountCredentialsAsync(accountRegistration.Password, account.Id, account);
+
+            return (account, token);
         }
 
         public async Task AccountDeleteAsync(string tokenString)
         {
             int accountId = GetAccountIdFromToken(tokenString);
+
             AccountDto account = await _authNetCoreDbContext
                 .Account
                 .FindAsync(accountId) ?? throw new Exception("Account not found.");
@@ -65,111 +75,101 @@ namespace AuthNetCore.DAL
             await _authNetCoreDbContext.SaveChangesAsync();
         }
 
-        public async Task<bool> RevokeTokenAsync(string token)
-        {
-            AccountSessionsDto? session = await _authNetCoreDbContext
-                .AccountSessions
-                .FirstOrDefaultAsync(acc => acc.Token == token);
-            
-            if (session == null || session.IsRevoked) return false;
-
-            session.IsRevoked = true;
-            await _authNetCoreDbContext.SaveChangesAsync();
-            return true;
-        }
-
         public async Task<AccountDto> PasswordRecoveryAsync(string email)
         {
             var (accountId, accountDto) = await GetAccountDtoIdByEmail(email);
             string token = await GetAccountSessionTokenCompromisedAsync(accountId);
             await SenderEMailRecipentAsync(email, accountId, token);
+
             return accountDto;
         }
 
-        public async Task ResetPasswordAsync(AccountResetPassword accountResetPassword)
+        public async Task<bool> ResetPasswordAsync(AccountResetPassword accountResetPassword)
         {
+            if( accountResetPassword.email == null || 
+                accountResetPassword.password == null || 
+                accountResetPassword.passwordConfirmation == null) return false;
+
             var (id, accountDto) = await GetAccountDtoIdByEmail(accountResetPassword.email);
+            if (accountDto == null) return false;
+            if (accountDto.Id == 0) return false;
+
             AccountSessionsDto accountSessions = await GetAccountSessionById(id);
+            if (accountSessions == null) return false;
+
             RemoveAccountSession(accountSessions);
             AccountAuth? accountAuth = await GetAccountAuthByAccountIdAsync(id);
+            if (accountAuth == null) return false;
+
             RemoveAccountAuth(accountAuth);
             await StablishAccountCredentialsAsync(accountResetPassword.passwordConfirmation, id, accountDto);
+
+            return true;
         }
 
-        #region Helper Methods
-
-        private async Task<AccountDto> HandleSuccessfulLoginAsync(AccountDto account)
+        public async Task<bool> RevokeTokenAsync(string token)
         {
-            string token = GenerateJwtToken(account);
-            await CreateAccountSessionAsync(account.Id, token);
-            ResetFailedLoginAttempts(account);
+            AccountSessionsDto? session = await _authNetCoreDbContext
+                .AccountSessions
+                .FirstOrDefaultAsync(acc => acc.Token == token);
 
-            return account;
-        }
+            if (session == null || session.IsRevoked) return false;
 
-        private async Task HandleFailedLoginAttemptAsync(AccountDto account)
-        {
-            account.FailedLoginAttempts++;
-            if (account.FailedLoginAttempts >= 3)
-            {
-                await LockAccountAsync(account);
-            }
+            session.IsRevoked = true;
+            await AddingTokenToBlackListAsync(session.AccountId, token);
             await _authNetCoreDbContext.SaveChangesAsync();
+
+            return true;
         }
 
-        private async Task LockAccountAsync(AccountDto account)
-        {
-            AccountSessionsDto? session = await _authNetCoreDbContext.AccountSessions
-                .Where(a => a.AccountId == account.Id && !a.IsRevoked)
-                .FirstOrDefaultAsync();
+        #region AccountService Helper Methods
 
-            if (session != null)
+        private async Task AddingTokenToBlackListAsync(int id, string token)
+        {
+            BlackListTokenDto blackListTokenItem = new BlackListTokenDto
             {
-                await AddingTokenToBlackListAsync(session.Id, session.Token);
-            }
-
-            account.IsLocked = true;
-        }
-
-        private async Task StablishAccountCredentialsAsync(string password, int accountId, AccountDto accountDto)
-        {
-            await CreateAccountAuthAsync(password, accountId);
-            string token = GenerateJwtToken(accountDto);
-            await CreateAccountSessionAsync(accountId, token);
-        }
-
-        private async Task CreateAccountSessionAsync(int accountId, string token)
-        {
-            AccountSessionsDto accountSession = new AccountSessionsDto
-            {
-                AccountId = accountId,
+                AccountId = id,
                 Token = token,
-                IsRevoked = false
+                RevokeTokenDateTime = DateTime.Now
             };
-            await _authNetCoreDbContext.AccountSessions.AddAsync(accountSession);
-            await _authNetCoreDbContext.SaveChangesAsync();
+            await _authNetCoreDbContext.BlackListToken.AddAsync(blackListTokenItem);
         }
 
-        private async Task<AccountDto> CreateAccountAsync(AccountRegistration accountRegistration)
+        private async Task<AccountDto?> CreateAccountAsync(AccountRegistration accountRegistration)
         {
-            AccountDto account = new AccountDto
+            if (string.IsNullOrEmpty(accountRegistration.Name))
+                return new AccountDto();
+
+            if (string.IsNullOrEmpty(accountRegistration.LastName))
+                return new AccountDto();
+
+            if (string.IsNullOrEmpty(accountRegistration.Email))
+                return new AccountDto();
+
+            if (accountRegistration.BirthDate == DateOnly.MinValue && accountRegistration.BirthDate > DateOnly.FromDateTime(DateTime.Now))
+                return new AccountDto();
+
+            AccountDto? account = await GetAccountByEmailAsync(accountRegistration.Email);
+
+            if (account != null)
             {
-                Id = accountRegistration.Id,
-                Name = accountRegistration.Name,
-                LastName = accountRegistration.LastName,
-                Email = accountRegistration.Email,
-                BirthDate = accountRegistration.BirthDate
-            };
-            await _authNetCoreDbContext.Account.AddAsync(account);
-            await _authNetCoreDbContext.SaveChangesAsync();
+                account = new AccountDto
+                {
+                    Id = accountRegistration.Id,
+                    Name = accountRegistration.Name,
+                    LastName = accountRegistration.LastName,
+                    Email = accountRegistration.Email,
+                    BirthDate = accountRegistration.BirthDate
+                };
+
+                await _authNetCoreDbContext.Account.AddAsync(account);
+                await _authNetCoreDbContext.SaveChangesAsync();
+            }
 
             return account;
         }
 
-        private async Task CreateAccountAuthAsync(
-            string password, 
-            int accountId
-        )
+        private async Task CreateAccountAuthAsync(string password, int accountId)
         {
             var (passwordHash, passwordSalt) = SecurityHelper.CreatePasswordHash(password);
             AccountAuth accountAuth = new AccountAuth
@@ -179,6 +179,19 @@ namespace AuthNetCore.DAL
                 PasswordSalt = passwordSalt
             };
             await _authNetCoreDbContext.AccountAuth.AddAsync(accountAuth);
+            await _authNetCoreDbContext.SaveChangesAsync();
+        }
+
+        private async Task CreateAccountSessionAsync(int accountId, string token)
+        {
+            AccountSessionsDto accountSession = new AccountSessionsDto
+            {
+                AccountId = accountId,
+                Token = token,
+                IsRevoked = false,
+                Created = DateTime.Now
+            };
+            await _authNetCoreDbContext.AccountSessions.AddAsync(accountSession);
             await _authNetCoreDbContext.SaveChangesAsync();
         }
 
@@ -193,9 +206,12 @@ namespace AuthNetCore.DAL
             );
         }
 
-        private async Task<AccountDto?> GetAccountByEmailAsync(string email)
+        private int GetAccountIdFromToken(string tokenString)
         {
-            return await _authNetCoreDbContext.Account.FirstOrDefaultAsync(a => a.Email == email);
+            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+            JwtSecurityToken token = tokenHandler.ReadJwtToken(tokenString);
+            Claim accountIdClaim = token.Claims.FirstOrDefault(acc => acc.Type == "account_id") ?? throw new Exception("Invalid token.");
+            return Convert.ToInt32(accountIdClaim.Value);
         }
 
         private async Task<AccountAuth?> GetAccountAuthByAccountIdAsync(int accountId)
@@ -203,35 +219,98 @@ namespace AuthNetCore.DAL
             return await _authNetCoreDbContext.AccountAuth.FirstOrDefaultAsync(a => a.AccountId == accountId);
         }
 
+        private async Task<AccountDto?> GetAccountByEmailAsync(string email)
+        {
+            return await _authNetCoreDbContext.Account.FirstOrDefaultAsync(a => a.Email == email);
+        }
+
         private async Task<(int, AccountDto)> GetAccountDtoIdByEmail(string email)
         {
-            AccountDto? accountDto = await _authNetCoreDbContext.Account.FirstOrDefaultAsync(acc => acc.Email == email);
+            AccountDto? accountDto = await _authNetCoreDbContext
+                .Account
+                .FirstOrDefaultAsync(acc => acc.Email == email);
+
             if (accountDto == null) return (0, new AccountDto());
             return (accountDto.Id, accountDto);
         }
 
         private async Task<string> GetAccountSessionTokenCompromisedAsync(int id)
         {
-            AccountSessionsDto? accountSessionData = await _authNetCoreDbContext.AccountSessions.FirstOrDefaultAsync(accSData => accSData.AccountId == id);
+            AccountSessionsDto? accountSessionData = await _authNetCoreDbContext
+                .AccountSessions
+                .FirstOrDefaultAsync(accSData => accSData.AccountId == id);
+
             if (accountSessionData == null) return string.Empty;
             return accountSessionData.Token;
         }
 
         private async Task<AccountSessionsDto> GetAccountSessionById(int id)
         {
-            AccountSessionsDto? accountSessionData = await _authNetCoreDbContext.AccountSessions.FirstOrDefaultAsync(accSData => accSData.AccountId == id);
+            AccountSessionsDto? accountSessionData = await _authNetCoreDbContext
+                .AccountSessions
+                .FirstOrDefaultAsync(accSData => accSData.AccountId == id);
+
             if (accountSessionData == null) return new AccountSessionsDto();
+
             return accountSessionData;
         }
 
-        private void RemoveAccountSession(AccountSessionsDto accountSessionsDto)
+        private async Task HandleFailedLoginAttemptAsync(AccountDto account)
         {
-            _authNetCoreDbContext.AccountSessions.Remove(accountSessionsDto);
+            account.FailedLoginAttempts++;
+            if (account.FailedLoginAttempts >= 3)
+            {
+                await LockAccountAsync(account);
+            }
+            await _authNetCoreDbContext.SaveChangesAsync();
+        }
+
+        private async Task<(AccountDto, string)> HandleSuccessfulLoginAsync(AccountDto account)
+        {
+            string token = GenerateJwtToken(account);
+            await CreateAccountSessionAsync(account.Id, token);
+            ResetFailedLoginAttempts(account);
+
+            return (account, token);
+        }
+
+        private async Task LockAccountAsync(AccountDto account)
+        {
+            AccountSessionsDto? session = await _authNetCoreDbContext.AccountSessions
+                .Where(a => a.AccountId == account.Id && !a.IsRevoked)
+                .FirstOrDefaultAsync();
+
+            if (session != null)
+            {
+                await AddingTokenToBlackListAsync(session.Id, session.Token);
+            }
+
+            account.IsLocked = true;
+            account.LockoutEnd = DateTime.Now.AddMinutes(12);
+        }
+
+        private async Task<bool> PasswordStash(AccountAuth? auth, AccountLogin accountLogin, AccountDto account)
+        {
+            if (auth == null || !SecurityHelper.VerifyPassword(
+                    accountLogin.Password,
+                    auth.PasswordHash,
+                    auth.PasswordSalt)
+            )
+            {
+                await HandleFailedLoginAttemptAsync(account);
+                return false;
+            }
+            return true;
         }
 
         private void RemoveAccountAuth(AccountAuth accountAuth)
         {
             _authNetCoreDbContext.AccountAuth.Remove(accountAuth);
+        }
+
+        private void RemoveAccountSession(AccountSessionsDto accountSessionsDto)
+        {
+            _authNetCoreDbContext.AccountSessions.Remove(accountSessionsDto);
         }
 
         private void ResetFailedLoginAttempts(AccountDto account)
@@ -241,29 +320,35 @@ namespace AuthNetCore.DAL
             _authNetCoreDbContext.SaveChangesAsync();
         }
 
-        private int GetAccountIdFromToken(string tokenString)
-        {
-            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-            JwtSecurityToken token = tokenHandler.ReadJwtToken(tokenString);
-            Claim accountIdClaim = token.Claims.FirstOrDefault(acc => acc.Type == "account_id") ?? throw new Exception("Invalid token.");
-            return Convert.ToInt32(accountIdClaim.Value);
-        }
-
         private async Task<bool> SenderEMailRecipentAsync(string email, int id, string token)
         {
             if (!EmailServiceHelper.SendPasswordRecoveryEmail(email)) return false;
-            await AddingTokenToBlackListAsync(id, token); 
+            await AddingTokenToBlackListAsync(id, token);
             return true;
         }
 
-        private async Task AddingTokenToBlackListAsync(int id, string token)
+        private async Task<string> StablishAccountCredentialsAsync(string password, int accountId, AccountDto accountDto)
         {
-            BlackListTokenDto blackListTokenItem = new BlackListTokenDto
+            await CreateAccountAuthAsync(password, accountId);
+            string token = GenerateJwtToken(accountDto);
+            await CreateAccountSessionAsync(accountId, token);
+
+            return token;
+        }
+
+        private async Task UnlockAccountAsync(AccountDto account)
+        {
+            if (account.IsLocked && account.LockoutEnd.HasValue)
             {
-                AccountId = id,
-                Token = token,
-            };
-            await _authNetCoreDbContext.BlackListToken.AddAsync(blackListTokenItem);
+                if (DateTime.UtcNow >= account.LockoutEnd.Value)
+                {
+                    account.IsLocked = false;
+                    account.FailedLoginAttempts = 0;
+                    account.LockoutEnd = null;
+                    _authNetCoreDbContext.Account.Update(account);
+                    await _authNetCoreDbContext.SaveChangesAsync();
+                }
+            }
         }
 
         #endregion

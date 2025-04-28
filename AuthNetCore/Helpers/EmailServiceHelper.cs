@@ -20,11 +20,11 @@ namespace AuthNetCore.Helpers
         {
             try
             {
-                var token = TokenGenerator.GenerateSecureToken();
-                var link = RecoveryLinkBuilder.BuildLink(token);
-                var body = EmailTemplateBuilder.BuildRecoveryEmailBody(link);
+                string token = TokenGenerator.GenerateSecureToken();
+                string link = RecoveryLinkBuilder.BuildLink(token);
+                string body = EmailTemplateBuilder.BuildRecoveryEmailBody(link);
 
-                var email = EmailFactory.CreateEmail(recipientEmail, body);
+                MailMessage email = EmailFactory.CreateEmail(recipientEmail, body);
                 EmailSender.SendEmail(email, _config);
 
                 return true;
@@ -57,26 +57,26 @@ namespace AuthNetCore.Helpers
         private static byte[] GenerateRandomBytes(int length)
         {
             byte[] bytes = new byte[length];
-            using var rng = RandomNumberGenerator.Create();
+            using RandomNumberGenerator rng = RandomNumberGenerator.Create();
             rng.GetBytes(bytes);
             return bytes;
         }
 
         private static byte[] ComputeHmac(byte[] data)
         {
-            using var hmac = new HMACSHA256(_secretKey);
+            using HMACSHA256 hmac = new HMACSHA256(_secretKey);
             return hmac.ComputeHash(data);
         }
 
         private static byte[] Combine(params byte[][] arrays)
         {
             int length = 0;
-            foreach (var arr in arrays)
+            foreach (byte[] arr in arrays)
                 length += arr.Length;
 
             byte[] result = new byte[length];
             int offset = 0;
-            foreach (var arr in arrays)
+            foreach (byte[] arr in arrays)
             {
                 Buffer.BlockCopy(arr, 0, result, offset, arr.Length);
                 offset += arr.Length;
@@ -95,7 +95,7 @@ namespace AuthNetCore.Helpers
 
         private static byte[] GenerateInternalKey()
         {
-            using var rng = RandomNumberGenerator.Create();
+            using RandomNumberGenerator rng = RandomNumberGenerator.Create();
             byte[] key = new byte[32];
             rng.GetBytes(key);
             return key;
@@ -194,7 +194,7 @@ namespace AuthNetCore.Helpers
     {
         public static void SendEmail(MailMessage message, EmailConfiguration config)
         {
-            using var client = new SmtpClient(config.Server, config.Port)
+            using SmtpClient client = new SmtpClient(config.Server, config.Port)
             {
                 Credentials = new NetworkCredential(config.User, config.Password),
                 EnableSsl = true
