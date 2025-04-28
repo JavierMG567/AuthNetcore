@@ -17,45 +17,26 @@ namespace AuthNetCore.Helpers
         public static string GenerateJwtToken(string email, string accountId, string key, string issuer, string audience)
         {
             if (string.IsNullOrWhiteSpace(email))
-                throw new ArgumentException("Email no puede estar vacío.");
+                throw new ArgumentException("Email can't be null.");
             if (string.IsNullOrWhiteSpace(accountId))
-                throw new ArgumentException("Account ID no puede estar vacío.");
+                throw new ArgumentException("Account ID can't be null.");
             if (string.IsNullOrWhiteSpace(key))
-                throw new ArgumentException("Key no puede estar vacía.");
+                throw new ArgumentException("Key can't be null.");
 
-            SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
-            SigningCredentials credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512);
-            
-            Claim[] claims =
-            [
-                new Claim(JwtRegisteredClaimNames.Sub, email),
-                new Claim("account_id", accountId),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64)
-            ];
-
-            SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddHours(1),
-                SigningCredentials = credentials,
-                Issuer = issuer,
-                Audience = audience
-            };
-
+            SecurityTokenDescriptor tokenDescriptor = CreateTokenDescriptor(email, accountId, key, issuer, audience);
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
             SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
-            
+
             return tokenHandler.WriteToken(token);
         }
 
         public static (byte[] Hash, byte[] Salt) CreatePasswordHash(string password)
         {
             if (string.IsNullOrWhiteSpace(password))
-                throw new ArgumentException("La contraseña no puede estar vacía.");
+                throw new ArgumentException("Password can't be null.");
 
             if (password.Length < MinPasswordLength)
-                throw new ArgumentException($"La contraseña debe tener al menos {MinPasswordLength} caracteres.");
+                throw new ArgumentException($"Password has a minimal size {MinPasswordLength} caracters.");
 
             byte[] salt = GenerateSalt(SaltSize);
             byte[] hash = DeriveKey(password, salt, Iterations, HashSize);
@@ -76,6 +57,31 @@ namespace AuthNetCore.Helpers
 
             byte[] computedHash = DeriveKey(inputPassword, storedSalt, Iterations, HashSize);
             return CryptographicOperations.FixedTimeEquals(computedHash, storedHash);
+        }
+
+        #region Helper Methods
+
+        private static SecurityTokenDescriptor CreateTokenDescriptor(string email, string accountId, string key, string issuer, string audience)
+        {
+            SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
+            SigningCredentials credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512);
+
+            Claim[] claims =
+            [
+                new Claim(JwtRegisteredClaimNames.Sub, email),
+                new Claim("account_id", accountId),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64)
+            ];
+
+            return new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.UtcNow.AddHours(1),
+                SigningCredentials = credentials,
+                Issuer = issuer,
+                Audience = audience
+            };
         }
 
         private static byte[] DeriveKey(string password, byte[] salt, int iterations, int keySize)
@@ -140,5 +146,6 @@ namespace AuthNetCore.Helpers
             return rawSalt.Take(size).ToArray();
         }
 
+        #endregion
     }
 }
