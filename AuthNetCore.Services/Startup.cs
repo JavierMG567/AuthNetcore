@@ -10,7 +10,7 @@ namespace AuthNetCore.Services
 {
     internal class Startup
     {
-        public IConfiguration Configuration { get; set; }
+        private IConfiguration Configuration { get; set; }
         
         public Startup(IConfiguration configuration)
         {

@@ -97,7 +97,6 @@ C:\Users\javie\source\repos\AuthNetCore\AuthNetCore.Services\obj\Debug\net8.0\st
 C:\Users\javie\source\repos\AuthNetCore\AuthNetCore.Services\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.AuthNetCore.Services.props
 C:\Users\javie\source\repos\AuthNetCore\AuthNetCore.Services\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.AuthNetCore.Services.props
 C:\Users\javie\source\repos\AuthNetCore\AuthNetCore.Services\obj\Debug\net8.0\staticwebassets.pack.json
-C:\Users\javie\source\repos\AuthNetCore\AuthNetCore.Services\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Users\javie\source\repos\AuthNetCore\AuthNetCore.Services\obj\Debug\net8.0\AuthNetC.417DC29E.Up2Date
 C:\Users\javie\source\repos\AuthNetCore\AuthNetCore.Services\obj\Debug\net8.0\AuthNetCore.Services.dll
 C:\Users\javie\source\repos\AuthNetCore\AuthNetCore.Services\obj\Debug\net8.0\refint\AuthNetCore.Services.dll

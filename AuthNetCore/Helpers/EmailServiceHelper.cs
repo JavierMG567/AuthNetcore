@@ -36,7 +36,7 @@ namespace AuthNetCore.Helpers
         }
     }
 
-    #region Stablished Criteria Templates
+    #region TokenGenerator Criteria Templates
 
     internal static class TokenGenerator
     {

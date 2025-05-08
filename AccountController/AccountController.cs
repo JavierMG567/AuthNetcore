@@ -40,7 +40,7 @@ namespace AccountController
 
             try
             {
-                AccountDto accountRegistered = await _accountServiceBL.AccountRegisterAsync(accountRegistration);
+                var (accountRegistered, token) = await _accountServiceBL.AccountRegisterAsync(accountRegistration);
                 return Ok(accountRegistered);
             }
             catch (System.Exception)
@@ -65,14 +65,14 @@ namespace AccountController
 
             try
             {
-                AccountDto? account = await _accountServiceBL.AccountAuthenticateAsync(accountLogin);
+                var (accountLoged , token) = await _accountServiceBL.AccountAuthenticateAsync(accountLogin);
 
-                if (account == null)
+                if (accountLoged == null)
                 {
                     return BadRequest("Invalid login credentials.");
                 }
 
-                return Ok(account);
+                return Ok(accountLoged);
             }
             catch (System.Exception)
             {

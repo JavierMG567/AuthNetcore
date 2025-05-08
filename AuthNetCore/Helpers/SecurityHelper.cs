@@ -1,5 +1,4 @@
-﻿using System;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -11,8 +10,8 @@ namespace AuthNetCore.Helpers
     {
         private const int SaltSize = 64;
         private const int HashSize = 64;
-        private const int Iterations = 150_000; 
-        private const int MinPasswordLength = 12;
+        private const int Iterations = 150_000;
+        private const int MinPasswordLength = 10;
 
         public static string GenerateJwtToken(string email, string accountId, string key, string issuer, string audience)
         {
@@ -30,7 +29,7 @@ namespace AuthNetCore.Helpers
             return tokenHandler.WriteToken(token);
         }
 
-        public static (byte[] Hash, byte[] Salt) CreatePasswordHash(string password)
+        public static (byte[], byte[]) CreatePasswordHash(string password)
         {
             if (string.IsNullOrWhiteSpace(password))
                 throw new ArgumentException("Password can't be null.");
@@ -56,7 +55,9 @@ namespace AuthNetCore.Helpers
                 throw new ArgumentException("Stored salt is invalid.");
 
             byte[] computedHash = DeriveKey(inputPassword, storedSalt, Iterations, HashSize);
-            return CryptographicOperations.FixedTimeEquals(computedHash, storedHash);
+            var isAllocated = CryptographicOperations.FixedTimeEquals(computedHash, storedHash);
+            
+            return isAllocated;
         }
 
         #region Helper Methods
@@ -87,64 +88,96 @@ namespace AuthNetCore.Helpers
         private static byte[] DeriveKey(string password, byte[] salt, int iterations, int keySize)
         {
             byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
-            byte[] entropy = new byte[salt.Length];
-            RandomNumberGenerator.Fill(entropy);
+            byte[] derivedBytes;
 
-            for (int i = 0; i < salt.Length; i++)
-                salt[i] ^= entropy[i];
-
-            using (Rfc2898DeriveBytes pbkdf2 = new Rfc2898DeriveBytes(passwordBytes, salt, iterations, HashAlgorithmName.SHA512))
+            using (var pbkdf2 = new Rfc2898DeriveBytes(passwordBytes, salt, iterations, HashAlgorithmName.SHA512))
             {
-                byte[] rawKey = pbkdf2.GetBytes(keySize);
-                byte[] mask = new byte[keySize];
-                RandomNumberGenerator.Fill(mask);
-
-                for (int i = 0; i < keySize; i++)
-                    rawKey[i] ^= mask[i];
-
-                using (SHA512 sha512 = SHA512.Create())
-                {
-                    byte[] finalKey = sha512.ComputeHash(rawKey);
-                    return finalKey.Take(keySize).ToArray();
-                }
+                derivedBytes = pbkdf2.GetBytes(keySize);
             }
+            byte[] transformed = new byte[derivedBytes.Length];
+            for (int i = 0; i < derivedBytes.Length; i++)
+            {
+                byte b = derivedBytes[i];
+                byte rotated = (byte)((b << 3) | (b >> 5));
+                transformed[i] = rotated;
+            }
+            byte[] pattern = Encoding.UTF8.GetBytes("FixedXORPatternForDeriveKey123!");
+            for (int i = 0; i < transformed.Length; i++)
+            {
+                transformed[i] ^= pattern[i % pattern.Length];
+            }
+            for (int i = 0; i < transformed.Length; i++)
+            {
+                transformed[i] = (byte)~transformed[i];
+            }
+            for (int i = 0; i < transformed.Length; i++)
+            {
+                transformed[i] = (byte)(transformed[i] ^ 0x5A);
+            }
+            Array.Clear(passwordBytes, 0, passwordBytes.Length);
+            Array.Clear(derivedBytes, 0, derivedBytes.Length);
+
+            return transformed;
         }
 
         private static byte[] GenerateSalt(int size)
         {
-            if (size < 32)
-                throw new ArgumentException("Salt size debe ser al menos 32 bytes.");
+            size = size < 32 ? 32 : size;
 
-            byte[] rawSalt = new byte[size];
-            RandomNumberGenerator.Fill(rawSalt);
+            byte[] salt = new byte[size];
+            byte[] temp = new byte[size];
+            byte[] xorMask = new byte[size];
 
-            byte[] perturbation = new byte[size];
-            RandomNumberGenerator.Fill(perturbation);
+            RandomNumberGenerator.Fill(salt);
 
             for (int i = 0; i < size; i++)
-                rawSalt[i] ^= perturbation[i];
+            {
+                temp[i] = (byte)(salt[i] ^ (i * 31 % 256)); 
+            }
+
+            for (int i = 0; i < size; i += 4)
+            {
+                for (int j = 0; j < 4 && i + j < size; j++)
+                {
+                    salt[i + j] ^= temp[(i + j + 7) % size];
+                }
+            }
 
             for (int i = size - 1; i > 0; i--)
             {
-                int j = RandomNumberGenerator.GetInt32(i + 1);
-                (rawSalt[i], rawSalt[j]) = (rawSalt[j], rawSalt[i]);
+                int j = (i * 73 + 19) % size; 
+                byte tempByte = salt[i];
+                salt[i] = salt[j];
+                salt[j] = tempByte;
+            }
+
+            string pattern = "DeterministicSaltPattern123!";
+            byte[] patternBytes = Encoding.ASCII.GetBytes(pattern);
+            for (int i = 0; i < size; i++)
+            {
+                xorMask[i] = patternBytes[i % patternBytes.Length];
+                salt[i] ^= xorMask[i];
             }
 
             using (SHA256 sha256 = SHA256.Create())
             {
-                rawSalt = sha256.ComputeHash(rawSalt);
-            }
+                byte[] hashed = sha256.ComputeHash(salt);
 
-            if (rawSalt.Length < size)
-            {
-                byte[] extended = new byte[size];
-                Buffer.BlockCopy(rawSalt, 0, extended, 0, rawSalt.Length);
-                RandomNumberGenerator.Fill(extended.AsSpan(rawSalt.Length));
-                return extended;
-            }
+                byte[] finalSalt = new byte[size];
+                Buffer.BlockCopy(hashed, 0, finalSalt, 0, Math.Min(hashed.Length, size));
 
-            return rawSalt.Take(size).ToArray();
+                if (hashed.Length < size)
+                {
+                    for (int i = hashed.Length; i < size; i++)
+                    {
+                        finalSalt[i] = (byte)((finalSalt[i - 1] * 17 + i) % 256); // patrón simple
+                    }
+                }
+
+                return finalSalt;
+            }
         }
+
 
         #endregion
     }

@@ -10,8 +10,8 @@ namespace AuthNetCore.BL.IBL
 {
     public interface IAccountServiceBL
     {
-        Task<AccountDto> AccountRegisterAsync(AccountRegistration accountRegistration);
-        Task<AccountDto> AccountAuthenticateAsync(AccountLogin accountLogin);
+        Task<(AccountDto, string)> AccountRegisterAsync(AccountRegistration accountRegistration);
+        Task<(AccountDto, string)> AccountAuthenticateAsync(AccountLogin accountLogin);
         Task<bool> RevokeTokenAsync(string token);
         Task AccountDeleteAsync(string tokenString);
     }

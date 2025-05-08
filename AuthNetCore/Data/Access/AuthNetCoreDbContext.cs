@@ -11,14 +11,13 @@ namespace AuthNetCore.Data.Access
 {
     public class AuthNetCoreDbContext : DbContext
     {
-        public DbSet<AccountDto> Account { get; set; }
+        public DbSet<AccountDto> Accounts { get; set; }
         public DbSet<AccountSessionsDto> AccountSessions { get; set; }
         public DbSet<BlackListTokenDto> BlackListToken { get; set; }
         public DbSet<AccountAuth> AccountAuth { get; set; }
         public AuthNetCoreDbContext(DbContextOptions<AuthNetCoreDbContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AccountAuth>().HasKey(a => a.AccountId);
         }
     }
 }
