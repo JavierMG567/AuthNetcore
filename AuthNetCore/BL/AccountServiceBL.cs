@@ -17,12 +17,12 @@ namespace AuthNetCore.BL
         {
             _accountService = accountService;
         }
-        public async Task<AccountDto> AccountAuthenticateAsync(AccountLogin accountLogin)
+        public async Task<(AccountDto, string)> AccountAuthenticateAsync(AccountLogin accountLogin)
         {
             try
             {
-                AccountDto account = await _accountService.AccountAuthenticateAsync(accountLogin);
-                return account;
+                var (account, token) = await _accountService.AccountAuthenticateAsync(accountLogin);
+                return (account, token);
             }
             catch (Exception)
             {
@@ -42,12 +42,12 @@ namespace AuthNetCore.BL
             }
         }
 
-        public async Task<AccountDto> AccountRegisterAsync(AccountRegistration accountRegistration)
+        public async Task<(AccountDto, string)> AccountRegisterAsync(AccountRegistration accountRegistration)
         {
             try
             {
-                AccountDto account = await _accountService.AccountRegisterAsync(accountRegistration);
-                return account;
+                var (account, token)  = await _accountService.AccountRegisterAsync(accountRegistration);
+                return (account, token);
             }
             catch (Exception)
             {
