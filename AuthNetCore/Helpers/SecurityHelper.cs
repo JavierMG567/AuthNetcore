@@ -46,13 +46,13 @@ namespace AuthNetCore.Helpers
         public static bool VerifyPassword(string inputPassword, byte[] storedHash, byte[] storedSalt)
         {
             if (string.IsNullOrWhiteSpace(inputPassword))
-                throw new ArgumentException("Input password cannot be empty.");
+                throw new Exception("Input password cannot be empty.");
 
             if (storedHash == null || storedHash.Length != HashSize)
-                throw new ArgumentException("Stored hash is invalid.");
+                throw new Exception("Stored hash is invalid.");
 
             if (storedSalt == null || storedSalt.Length != SaltSize)
-                throw new ArgumentException("Stored salt is invalid.");
+                throw new Exception("Stored salt is invalid.");
 
             byte[] computedHash = DeriveKey(inputPassword, storedSalt, Iterations, HashSize);
             var isAllocated = CryptographicOperations.FixedTimeEquals(computedHash, storedHash);
