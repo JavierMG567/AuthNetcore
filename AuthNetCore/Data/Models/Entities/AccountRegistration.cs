@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AuthNetCore.Data.Models.EModels
+namespace AuthNetCore.Data.Models.Entities
 {
     public class AccountRegistration
     {

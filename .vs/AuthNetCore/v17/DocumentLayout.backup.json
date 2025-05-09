@@ -7,30 +7,42 @@
       "RelativeMoniker": "D:0:0:{85FD5DFC-9BFB-4906-8DCE-D0FCCBE7B41B}|AuthNetCore\\AuthNetCore.csproj|solutionrelative:authnetcore\\dal\\accountservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1B2946A3-A7D7-4E3C-A301-89A7E12FD0B0}|AuthNetCore.Services\\AuthNetCore.Services.csproj|c:\\users\\javie\\source\\repos\\authnetcore\\authnetcore.services\\commonstartup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1B2946A3-A7D7-4E3C-A301-89A7E12FD0B0}|AuthNetCore.Services\\AuthNetCore.Services.csproj|solutionrelative:authnetcore.services\\commonstartup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{85FD5DFC-9BFB-4906-8DCE-D0FCCBE7B41B}|AuthNetCore\\AuthNetCore.csproj|c:\\users\\javie\\source\\repos\\authnetcore\\authnetcore\\data\\models\\dtos\\accountdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{85FD5DFC-9BFB-4906-8DCE-D0FCCBE7B41B}|AuthNetCore\\AuthNetCore.csproj|solutionrelative:authnetcore\\data\\models\\dtos\\accountdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{1B2946A3-A7D7-4E3C-A301-89A7E12FD0B0}|AuthNetCore.Services\\AuthNetCore.Services.csproj|c:\\users\\javie\\source\\repos\\authnetcore\\authnetcore.services\\startup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{1B2946A3-A7D7-4E3C-A301-89A7E12FD0B0}|AuthNetCore.Services\\AuthNetCore.Services.csproj|solutionrelative:authnetcore.services\\startup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{85FD5DFC-9BFB-4906-8DCE-D0FCCBE7B41B}|AuthNetCore\\AuthNetCore.csproj|c:\\users\\javie\\source\\repos\\authnetcore\\authnetcore\\dal\\authorizationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{85FD5DFC-9BFB-4906-8DCE-D0FCCBE7B41B}|AuthNetCore\\AuthNetCore.csproj|solutionrelative:authnetcore\\dal\\authorizationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{1B2946A3-A7D7-4E3C-A301-89A7E12FD0B0}|AuthNetCore.Services\\AuthNetCore.Services.csproj|c:\\users\\javie\\source\\repos\\authnetcore\\authnetcore.services\\commonstartup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1B2946A3-A7D7-4E3C-A301-89A7E12FD0B0}|AuthNetCore.Services\\AuthNetCore.Services.csproj|solutionrelative:authnetcore.services\\commonstartup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{85FD5DFC-9BFB-4906-8DCE-D0FCCBE7B41B}|AuthNetCore\\AuthNetCore.csproj|c:\\users\\javie\\source\\repos\\authnetcore\\authnetcore\\helpers\\securityhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{85FD5DFC-9BFB-4906-8DCE-D0FCCBE7B41B}|AuthNetCore\\AuthNetCore.csproj|solutionrelative:authnetcore\\helpers\\securityhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{85FD5DFC-9BFB-4906-8DCE-D0FCCBE7B41B}|AuthNetCore\\AuthNetCore.csproj|c:\\users\\javie\\source\\repos\\authnetcore\\authnetcore\\dal\\accountservice.extensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{85FD5DFC-9BFB-4906-8DCE-D0FCCBE7B41B}|AuthNetCore\\AuthNetCore.csproj|solutionrelative:authnetcore\\dal\\accountservice.extensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{85FD5DFC-9BFB-4906-8DCE-D0FCCBE7B41B}|AuthNetCore\\AuthNetCore.csproj|c:\\users\\javie\\source\\repos\\authnetcore\\authnetcore\\bl\\accountservicebl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{85FD5DFC-9BFB-4906-8DCE-D0FCCBE7B41B}|AuthNetCore\\AuthNetCore.csproj|solutionrelative:authnetcore\\bl\\accountservicebl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{85FD5DFC-9BFB-4906-8DCE-D0FCCBE7B41B}|AuthNetCore\\AuthNetCore.csproj|c:\\users\\javie\\source\\repos\\authnetcore\\authnetcore\\dal\\idal\\iaccountservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{85FD5DFC-9BFB-4906-8DCE-D0FCCBE7B41B}|AuthNetCore\\AuthNetCore.csproj|solutionrelative:authnetcore\\dal\\idal\\iaccountservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{85FD5DFC-9BFB-4906-8DCE-D0FCCBE7B41B}|AuthNetCore\\AuthNetCore.csproj|c:\\users\\javie\\source\\repos\\authnetcore\\authnetcore\\dal\\idal\\ipasswordrecovery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{85FD5DFC-9BFB-4906-8DCE-D0FCCBE7B41B}|AuthNetCore\\AuthNetCore.csproj|solutionrelative:authnetcore\\dal\\idal\\ipasswordrecovery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
     {
-      "Orientation": 1,
+      "Orientation": 0,
       "VerticalTabListWidth": 130,
       "DocumentGroups": [
         {
-          "DockedHeight": 8995,
-          "SelectedChildIndex": 5,
+          "DockedWidth": 595,
+          "SelectedChildIndex": 10,
           "Children": [
             {
               "$type": "Bookmark",
@@ -46,28 +58,93 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AccountDto.cs",
+              "DocumentMoniker": "C:\\Users\\javie\\source\\repos\\AuthNetCore\\AuthNetCore\\Data\\Models\\DTOs\\AccountDto.cs",
+              "RelativeDocumentMoniker": "AuthNetCore\\Data\\Models\\DTOs\\AccountDto.cs",
+              "ToolTip": "C:\\Users\\javie\\source\\repos\\AuthNetCore\\AuthNetCore\\Data\\Models\\DTOs\\AccountDto.cs",
+              "RelativeToolTip": "AuthNetCore\\Data\\Models\\DTOs\\AccountDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-09T03:48:34.208Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 2,
               "Title": "Startup.cs",
               "DocumentMoniker": "C:\\Users\\javie\\source\\repos\\AuthNetCore\\AuthNetCore.Services\\Startup.cs",
               "RelativeDocumentMoniker": "AuthNetCore.Services\\Startup.cs",
               "ToolTip": "C:\\Users\\javie\\source\\repos\\AuthNetCore\\AuthNetCore.Services\\Startup.cs",
               "RelativeToolTip": "AuthNetCore.Services\\Startup.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAABEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-27T23:28:15.776Z",
+              "WhenOpened": "2025-05-09T03:46:36.744Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "CommonStartup.cs",
               "DocumentMoniker": "C:\\Users\\javie\\source\\repos\\AuthNetCore\\AuthNetCore.Services\\CommonStartup.cs",
               "RelativeDocumentMoniker": "AuthNetCore.Services\\CommonStartup.cs",
               "ToolTip": "C:\\Users\\javie\\source\\repos\\AuthNetCore\\AuthNetCore.Services\\CommonStartup.cs",
               "RelativeToolTip": "AuthNetCore.Services\\CommonStartup.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADEAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-27T23:28:13.172Z",
+              "WhenOpened": "2025-05-09T03:46:35.061Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "AccountServiceBL.cs",
+              "DocumentMoniker": "C:\\Users\\javie\\source\\repos\\AuthNetCore\\AuthNetCore\\BL\\AccountServiceBL.cs",
+              "RelativeDocumentMoniker": "AuthNetCore\\BL\\AccountServiceBL.cs",
+              "ToolTip": "C:\\Users\\javie\\source\\repos\\AuthNetCore\\AuthNetCore\\BL\\AccountServiceBL.cs",
+              "RelativeToolTip": "AuthNetCore\\BL\\AccountServiceBL.cs",
+              "ViewState": "AgIAAEYAAAAAAAAAAAAcwFEAAAA/AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-09T03:44:25.993Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "IAccountService.cs",
+              "DocumentMoniker": "C:\\Users\\javie\\source\\repos\\AuthNetCore\\AuthNetCore\\DAL\\IDAL\\IAccountService.cs",
+              "RelativeDocumentMoniker": "AuthNetCore\\DAL\\IDAL\\IAccountService.cs",
+              "ToolTip": "C:\\Users\\javie\\source\\repos\\AuthNetCore\\AuthNetCore\\DAL\\IDAL\\IAccountService.cs",
+              "RelativeToolTip": "AuthNetCore\\DAL\\IDAL\\IAccountService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-09T03:41:50.089Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "IPasswordRecovery.cs",
+              "DocumentMoniker": "C:\\Users\\javie\\source\\repos\\AuthNetCore\\AuthNetCore\\DAL\\IDAL\\IPasswordRecovery.cs",
+              "RelativeDocumentMoniker": "AuthNetCore\\DAL\\IDAL\\IPasswordRecovery.cs",
+              "ToolTip": "C:\\Users\\javie\\source\\repos\\AuthNetCore\\AuthNetCore\\DAL\\IDAL\\IPasswordRecovery.cs",
+              "RelativeToolTip": "AuthNetCore\\DAL\\IDAL\\IPasswordRecovery.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-09T03:41:28.536Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "AccountService.Extensions.cs",
+              "DocumentMoniker": "C:\\Users\\javie\\source\\repos\\AuthNetCore\\AuthNetCore\\DAL\\AccountService.Extensions.cs",
+              "RelativeDocumentMoniker": "AuthNetCore\\DAL\\AccountService.Extensions.cs",
+              "ToolTip": "C:\\Users\\javie\\source\\repos\\AuthNetCore\\AuthNetCore\\DAL\\AccountService.Extensions.cs",
+              "RelativeToolTip": "AuthNetCore\\DAL\\AccountService.Extensions.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-09T03:32:21.773Z",
               "EditorCaption": ""
             },
             {
@@ -78,35 +155,9 @@
               "RelativeDocumentMoniker": "AuthNetCore\\DAL\\AccountService.cs",
               "ToolTip": "C:\\Users\\javie\\source\\repos\\AuthNetCore\\AuthNetCore\\DAL\\AccountService.cs",
               "RelativeToolTip": "AuthNetCore\\DAL\\AccountService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACwAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAxAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-27T23:27:46.665Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "AuthorizationService.cs",
-              "DocumentMoniker": "C:\\Users\\javie\\source\\repos\\AuthNetCore\\AuthNetCore\\DAL\\AuthorizationService.cs",
-              "RelativeDocumentMoniker": "AuthNetCore\\DAL\\AuthorizationService.cs",
-              "ToolTip": "C:\\Users\\javie\\source\\repos\\AuthNetCore\\AuthNetCore\\DAL\\AuthorizationService.cs",
-              "RelativeToolTip": "AuthNetCore\\DAL\\AuthorizationService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-27T23:27:45.128Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "SecurityHelper.cs",
-              "DocumentMoniker": "C:\\Users\\javie\\source\\repos\\AuthNetCore\\AuthNetCore\\Helpers\\SecurityHelper.cs",
-              "RelativeDocumentMoniker": "AuthNetCore\\Helpers\\SecurityHelper.cs",
-              "ToolTip": "C:\\Users\\javie\\source\\repos\\AuthNetCore\\AuthNetCore\\Helpers\\SecurityHelper.cs",
-              "RelativeToolTip": "AuthNetCore\\Helpers\\SecurityHelper.cs",
-              "ViewState": "AgIAAEkAAAAAAAAAAAAkwC4AAABlAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-27T23:06:22.763Z",
+              "WhenOpened": "2025-05-09T03:28:23.405Z",
               "EditorCaption": ""
             }
           ]

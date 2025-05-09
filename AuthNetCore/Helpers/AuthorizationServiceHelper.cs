@@ -1,4 +1,4 @@
-﻿using AuthNetCore.Data.Models.EModels;
+﻿using AuthNetCore.Data.Models.Entities;
 using AuthNetCore.Utilities.Globals;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;

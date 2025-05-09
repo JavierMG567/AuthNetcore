@@ -1,6 +1,5 @@
 ﻿using AuthNetCore.BL.IBL;
-using AuthNetCore.Data.Models.DTos;
-using AuthNetCore.Data.Models.EModels;
+using AuthNetCore.Data.Models.Entities;
 using AuthNetCore.Utilities.BaseControllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

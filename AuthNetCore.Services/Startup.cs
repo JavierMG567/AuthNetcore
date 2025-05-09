@@ -2,7 +2,7 @@
 using AuthNetCore.BL.IBL;
 using AuthNetCore.DAL;
 using AuthNetCore.DAL.IDAL;
-using AuthNetCore.Data.Models.EModels;
+using AuthNetCore.Data.Models.Entities;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Identity.Client;
 
@@ -32,6 +32,7 @@ namespace AuthNetCore.Services
 
             services.AddScoped<IAccountServiceBL, AccountServiceBL>();
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IPasswordRecovery, AccountService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)

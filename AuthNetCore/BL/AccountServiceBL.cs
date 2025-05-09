@@ -1,7 +1,8 @@
 ﻿using AuthNetCore.BL.IBL;
 using AuthNetCore.DAL.IDAL;
-using AuthNetCore.Data.Models.DTos;
-using AuthNetCore.Data.Models.EModels;
+using AuthNetCore.Data.Models.DTOs;
+using AuthNetCore.Data.Models.Entities;
+using AuthNetCore.Data.Models.EntityFrameworkModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,17 @@ namespace AuthNetCore.BL
     public class AccountServiceBL : IAccountServiceBL
     {
         private readonly IAccountService _accountService;
-        public AccountServiceBL(IAccountService accountService)
+        private readonly IPasswordRecovery _passwordRecovery;
+
+        public AccountServiceBL(
+            IAccountService accountService, 
+            IPasswordRecovery passwordRecovery
+        )
         {
             _accountService = accountService;
+            _passwordRecovery = passwordRecovery;
         }
+
         public async Task<(AccountDto, string)> AccountAuthenticateAsync(AccountLogin accountLogin)
         {
             try
@@ -61,6 +69,18 @@ namespace AuthNetCore.BL
             {
                 bool drawRevokeInSession = await _accountService.RevokeTokenAsync(token);
                 return drawRevokeInSession;
+            }
+            catch (Exception)
+            {
+                throw new Exception();
+            }
+        }
+        public async Task<AccountDto> PasswordRecoveryAsync(string email)
+        {
+            try
+            {
+                AccountDto accountDto = await _passwordRecovery.PasswordRecoveryAsync(email);
+                return accountDto;
             }
             catch (Exception)
             {

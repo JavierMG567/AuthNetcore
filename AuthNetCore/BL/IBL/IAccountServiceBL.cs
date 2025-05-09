@@ -1,5 +1,5 @@
-﻿using AuthNetCore.Data.Models.DTos;
-using AuthNetCore.Data.Models.EModels;
+﻿using AuthNetCore.Data.Models.DTOs;
+using AuthNetCore.Data.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +13,7 @@ namespace AuthNetCore.BL.IBL
         Task<(AccountDto, string)> AccountRegisterAsync(AccountRegistration accountRegistration);
         Task<(AccountDto, string)> AccountAuthenticateAsync(AccountLogin accountLogin);
         Task<bool> RevokeTokenAsync(string token);
+        Task<AccountDto> PasswordRecoveryAsync(string email);
         Task AccountDeleteAsync(string tokenString);
     }
 }

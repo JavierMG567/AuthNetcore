@@ -41,7 +41,7 @@
     "Parameters": [
       {
         "Name": "accountLogin",
-        "Type": "AuthNetCore.Data.Models.EModels.AccountLogin",
+        "Type": "AuthNetCore.Data.Models.Entities.AccountLogin",
         "IsRequired": true
       }
     ],
@@ -105,7 +105,7 @@
     "Parameters": [
       {
         "Name": "accountRegistration",
-        "Type": "AuthNetCore.Data.Models.EModels.AccountRegistration",
+        "Type": "AuthNetCore.Data.Models.Entities.AccountRegistration",
         "IsRequired": true
       }
     ],
